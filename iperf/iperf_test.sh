@@ -51,3 +51,9 @@ wait $PID1 $PID2 $PID3
 echo "==========================================================" >> $LOG_FILE
 echo "Test Finished." | tee -a $LOG_FILE
 echo "=========================================================="
+
+# Node0 is the server, and node 1-3 is the client.
+# Run "iperf -s -u -p 6000 -i 1" in the server window.
+# Run "./iperf_test.sh" in the control window.
+# Node 0 will show the recieved data and after finsih running it will generate a logfile results.
+# Enter "cat logfile_results.txt" in the controller window then you can see the result file.
