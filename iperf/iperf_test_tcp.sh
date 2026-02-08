@@ -6,46 +6,55 @@
 PASS="rvkKVu1ckm31"   
 SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-TARGET_IP="10.0.1.3"  # Node 1 (Receiver)
+# SERVER IP (Node 0)
+TARGET_IP="10.0.0.3"  
 
 TIME=30
-
-# The Pattern that causes the IDS to DROP the packet
 BAD_PATTERN="ABCDEFG"
 
 LOG_FILE="logfile_results_tcp.txt"
 
 echo "=========================================================="
-echo " Starting TCP Test (Clients: Node 2 & 3 -> Server: Node 1)"
+echo " Starting TCP Test (3 Clients -> 1 Server)"
 echo " Saving results to: $LOG_FILE"
 echo "=========================================================="
 
 echo "Test Date: $(date)" > $LOG_FILE
-echo "Test Type: Hardware Routing & IDS Test (TCP Mode)" >> $LOG_FILE
+echo "Type: 2 Good Clients + 1 Bad Client (TCP)" >> $LOG_FILE
 echo "----------------------------------------------------------" >> $LOG_FILE
 
-# Node 2 (GOOD TRAFFIC)
-# Removed -u (UDP) and -b (Bandwidth)
-echo "Starting Node 2 (Good TCP Traffic)..." | tee -a $LOG_FILE
-sshpass -p "$PASS" ssh $SSH_OPTS node0@nf3 "iperf -c $TARGET_IP -l 512 -t $TIME -p 6000" 2>&1 | sed 's/\[  3\]/[n2-Good]/g' | tee -a $LOG_FILE &
+# -------------------------------------------------------
+# CLIENT 1: Node 1 (GOOD TRAFFIC)
+# -------------------------------------------------------
+echo "Starting Client 1 on Node 1 (Good)..." | tee -a $LOG_FILE
+sshpass -p "$PASS" ssh $SSH_OPTS node0@nf2 "iperf -c $TARGET_IP -l 512 -t $TIME -p 6000" 2>&1 | sed 's/\[  3\]/[N2-Good]/g' | tee -a $LOG_FILE &
+PID1=$!
+
+# -------------------------------------------------------
+# CLIENT 2: Node 2 (GOOD TRAFFIC)
+# -------------------------------------------------------
+echo "Starting Client 2 on Node 2 (Good)..." | tee -a $LOG_FILE
+sshpass -p "$PASS" ssh $SSH_OPTS node0@nf3 "iperf -c $TARGET_IP -l 512 -t $TIME -p 6000" 2>&1 | sed 's/\[  3\]/[N3-Good]/g' | tee -a $LOG_FILE &
 PID2=$!
 
-# Node 3 (BAD TRAFFIC)
-# Removed -u and -b. Kept -I (Pattern)
-echo "Starting Node 3 (Bad TCP Traffic with Pattern)..." | tee -a $LOG_FILE
-sshpass -p "$PASS" ssh $SSH_OPTS node0@nf4 "iperf -c $TARGET_IP -l 512 -t $TIME -p 6000 -I $BAD_PATTERN" 2>&1 | sed 's/\[  3\]/[n3-BAD ]/g' | tee -a $LOG_FILE &
+# -------------------------------------------------------
+# CLIENT 3: Node 3 (BAD TRAFFIC - WITH VIRUS)
+# -------------------------------------------------------
+echo "Starting Client 3 on Node 3 (BAD - with Pattern)..." | tee -a $LOG_FILE
+sshpass -p "$PASS" ssh $SSH_OPTS node0@nf4 "iperf -c $TARGET_IP -l 512 -t $TIME -p 6000 -I $BAD_PATTERN" 2>&1 | sed 's/\[  3\]/[N3-BAD ]/g' | tee -a $LOG_FILE &
 PID3=$!
 
 # -------------------------------------------------------
 # WAIT
 # -------------------------------------------------------
 echo ""
-echo "Tests running... Output is being saved to $LOG_FILE"
-wait $PID2 $PID3
+echo "Tests running... Waiting for completion..."
+wait $PID1 $PID2 $PID3
 
 echo "==========================================================" >> $LOG_FILE
 echo "Test Finished." | tee -a $LOG_FILE
 echo "=========================================================="
+
 
 # =======================================================
 # INSTRUCTIONS FOR SERVER (NODE 1)
