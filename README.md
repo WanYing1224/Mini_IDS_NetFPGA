@@ -88,9 +88,9 @@ The repository includes automated scripts to generate traffic from multiple clie
 
 ## 📝 Register Map
 
-| Register Name      | Address     | R/W | Description                           |
-| ----------------   | ---------   | :-: | ------------------------------------- |
-| `IDS_PATTERN_HIGH` | `0x2000300` |  W  | Upper 32-bits of the match pattern    |
-| `IDS_PATTERN_LOW`  | `0x2000304` |  W  | Lower 32-bits of the match pattern    |
-| `IDS_MATCHES`      | `0x2000308` |  R  | Counter: Number of packets dropped    |
-| `IDS_RESET`        | `0x200030C` |  W  | Write any value to reset |the counter |
+| Register Name        | Address     | R/W | Description                           |
+| ----------------     | ---------   | :-: | ------------------------------------- |
+| `IDS_PATTERN_HI_REG` | `0x2000300` |  W  | Upper 32-bits of the match pattern    |
+| `IDS_PATTERN_LO_REG` | `0x2000304` |  W  | Lower 32-bits of the match pattern    |
+| `IDS_COMMAND_REG`    | `0x2000308` |  W  | Write any value to reset the counter  |
+| `IDS_MATCHES_REG`    | `0x200030C` |  R  | Counter: Number of packets dropped    |
