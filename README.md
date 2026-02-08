@@ -2,7 +2,7 @@
 This project implements a hardware-accelerated Intrusion Detection System (IDS) on the NetFPGA platform. The design modifies the Reference Router to scan packet payloads in real-time and drop packets containing a specific malicious pattern (e.g., a "virus" signature) at line rate.
 
 ## 👥 Authors
-**USC EE533 Group 2 Members: [Kevelyn Lin](https://github.com/WanYing1224) , [Yuxiang Luo](https://github.com/lllyxxxx) , [Ian Chen](https://github.com/ichen522)**
+**USC EE533 Group 2 Members: [Kevelyn Lin](https://github.com/WanYing1224), [Yuxiang Luo](https://github.com/lllyxxxx), [Ian Chen](https://github.com/ichen522)**
 
 ## 🚀 Project Overview
 
