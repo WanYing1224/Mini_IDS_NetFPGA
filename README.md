@@ -1,6 +1,9 @@
 # Mini_IDS_NetFPGA
 This project implements a hardware-accelerated Intrusion Detection System (IDS) on the NetFPGA platform. The design modifies the Reference Router to scan packet payloads in real-time and drop packets containing a specific malicious pattern (e.g., a "virus" signature) at line rate.
 
+## 👥 Authors
+**USC EE533 Group 2 Members: [Kevelyn Lin](https://github.com/WanYing1224) , [Yuxiang Luo](https://github.com/lllyxxxx) , [Ian Chen](https://github.com/ichen522)**
+
 ## 🚀 Project Overview
 
 The core of this project is a custom Verilog module integrated into the NetFPGA user data path. It inspects every packet passing through the router. If a packet's payload matches a configurable 8-byte hex pattern, the packet is dropped before it reaches the output queues.
@@ -91,6 +94,3 @@ The repository includes automated scripts to generate traffic from multiple clie
 | `IDS_PATTERN_LOW`  | `0x2000304` |  W  | Lower 32-bits of the match pattern    |
 | `IDS_MATCHES`      | `0x2000308` |  R  | Counter: Number of packets dropped    |
 | `IDS_RESET`        | `0x200030C` |  W  | Write any value to reset |the counter |
-
-
-
